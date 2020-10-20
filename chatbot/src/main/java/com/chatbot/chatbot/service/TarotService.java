@@ -1,5 +1,6 @@
 package com.chatbot.chatbot.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -18,8 +19,13 @@ public class TarotService {
 	
 	public boolean  pickRandomTarot(Map<String, Object> tarotResponse) {
 		Random rand = new Random();
-		int rand_int = rand.nextInt(3) + 1;
-		Optional<Tarot> pickedTarot = tarotRepository.findById(rand_int);
+		Optional<List<Integer>> id_list = Optional.ofNullable(tarotRepository.findTarotIdList());
+		if (id_list.isPresent() == false) {
+			return false;
+		}
+		int size = id_list.get().size();
+		int index = rand.nextInt(size);
+		Optional<Tarot> pickedTarot = tarotRepository.findById(id_list.get().get(index));
 		if (pickedTarot.isPresent() == false) {
 			return false;
 		}
