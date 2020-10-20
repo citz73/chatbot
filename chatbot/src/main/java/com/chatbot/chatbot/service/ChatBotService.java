@@ -75,7 +75,9 @@ public class ChatBotService {
 			lover_name = (String) payload.get("lover_name");
 		}
 		if (user_command.contains("tarot")) {
-			tarotService.pickRandomTarot(result);
+			if (tarotService.pickRandomTarot(result) == false) {
+				return responseBuilder.notAcceptable("타로카드 정보가 정확하지 않습니다.", false);
+			}
 		} else {
 			Optional<BotCommunication> queryBot =  botCommunicationService.findCommunicationByUserCommand(user_command);
 			if (queryBot.isPresent() == false) {
